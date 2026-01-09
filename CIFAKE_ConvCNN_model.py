@@ -20,11 +20,11 @@ class CIFAKE_ConvCNN(nn.Module):
 
         self.conv1 = nn.Conv2d(in_channels=3, out_channels=32, kernel_size=3, padding=1)
         self.relu1 = nn.ReLU()
-        self.maxpool1 = nn.MaxPool2d(kernel_size=2, stride=2) # 16*16
+        self.maxpool1 = nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.conv2 = nn.Conv2d(in_channels=32, out_channels=32, kernel_size=3, padding=1)
         self.relu2 = nn.ReLU()
-        self.maxpool2 = nn.MaxPool2d(kernel_size=2, stride=2) #8*8
+        self.maxpool2 = nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.flatten = nn.Flatten()
 
@@ -35,8 +35,8 @@ class CIFAKE_ConvCNN(nn.Module):
         self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
-        x = self.maxpool1(self.relu1(self.conv1(x)))
-        x = self.maxpool2(self.relu2(self.conv2(x)))
+        x = self.maxpool1(self.relu1(self.conv1(x))) # 16*16
+        x = self.maxpool2(self.relu2(self.conv2(x))) # 8*8
         x = self.flatten(x)
         x = self.relu3(self.fc1(x))
         x = self.sigmoid(self.fc2(x))
@@ -150,7 +150,7 @@ def get_metrics_and_plot(model, test_loader, history, device='mps'):
     print(f"Recall:\t{recall:.4f}")
     print(f"F1 Score:\t{f1:.4f}")
 
-    plt.figure(figsize=(25, 10))
+    plt.figure(figsize=(30, 10))
 
     #Loss
     plt.subplot(1, 3, 1)
@@ -180,6 +180,7 @@ def get_metrics_and_plot(model, test_loader, history, device='mps'):
     plt.ylabel('True Label')
 
     plt.tight_layout()
+    plt.savefig('training_results/conv_cnn/conv_cnn.png')
     plt.show()
 
 if __name__ == "__main__":

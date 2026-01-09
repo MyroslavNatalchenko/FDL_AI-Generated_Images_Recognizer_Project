@@ -228,7 +228,7 @@ def get_metrics_and_plot(model, test_loader, history, device='mps'):
     print(f"Recall:\t{recall:.4f}")
     print(f"F1 Score:\t{f1:.4f}")
 
-    plt.figure(figsize=(25, 10))
+    plt.figure(figsize=(30, 10))
 
     #Loss
     plt.subplot(1, 3, 1)
@@ -259,6 +259,7 @@ def get_metrics_and_plot(model, test_loader, history, device='mps'):
     plt.ylabel('True Label')
 
     plt.tight_layout()
+    plt.savefig('training_results/resnet-50/resnet50.png')
     plt.show()
 
 if __name__ == "__main__":
