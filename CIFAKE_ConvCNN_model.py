@@ -53,7 +53,6 @@ def get_data_loaders(root, batch_size=64):
 
     return train_dataloader, test_dataloader
 
-
 def train_and_evaluate(model, train_loader, val_loader, epochs=10, device='mps'):
     criterion = nn.BCELoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
@@ -123,8 +122,9 @@ def train_and_evaluate(model, train_loader, val_loader, epochs=10, device='mps')
     print(f"Time taken for training: {time.time() - start_time:.2f}s")
     return history
 
-
 def get_metrics_and_plot(model, test_loader, history, device='mps'):
+    os.makedirs('training_results/conv_cnn', exist_ok=True)
+
     model.eval()
     all_preds, all_labels = [], []
 

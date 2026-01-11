@@ -130,8 +130,9 @@ def resnet50(num_classes=2):
     model = ResNet(Bottleneck, [3, 4, 6, 3], num_classes=num_classes)
     return model
 
-
 def train_and_evaluate(model, train_loader, val_loader, epochs=10, device='mps'):
+    os.makedirs('training_results/resnet-50', exist_ok=True)
+
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=0.001)
 
@@ -199,7 +200,6 @@ def train_and_evaluate(model, train_loader, val_loader, epochs=10, device='mps')
 
     print(f"Time taken for training: {time.time() - start_time:.2f}s")
     return history
-
 
 def get_metrics_and_plot(model, test_loader, history, device='mps'):
     model.eval()

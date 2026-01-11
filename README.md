@@ -38,14 +38,26 @@ Project for FDL subject in PJAIT
 2. https://docs.pytorch.org/tutorials/beginner/basics/data_tutorial.html
 
 # Training results
-### Conv CNN [10 epochs]
+## Conv CNN [10 epochs]
 - Time taken for training: 273.76s
 - Precision: 0.9503
-- Recall:	0.9399
-- F1 Score:	0.9451
+- Recall:	 0.9399
+- F1 Score:	 0.9451
 
-### ResNet 50 [5 epochs]
-- Time taken for training: 2347.11s
-- Precision: 0.9444
-- Recall:	0.9614
-- F1 Score:	0.9528
+## ResNet 50 [5 epochs]
+- Time taken for training: 2333.37s
+- Precision: 0.9318
+- Recall:	 0.9711
+- F1 Score:	 0.9510
+
+## Conv CNN with Tuner + DropOut [10 epochs]
+- Time taken for training: 1165.10s 
+- Precision:	0.9459
+- Recall:		0.9452
+- F1 Score:	    0.9455
+### BEST Configuration found with Tuner:
+- batch_size: 32 
+- n_neurons: 256
+- dropout_p: 0.29
+- lr: 0.001
+- weight_decay: 1e-05
