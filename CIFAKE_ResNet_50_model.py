@@ -269,7 +269,7 @@ if __name__ == "__main__":
 
     model = resnet50(num_classes=2).to(DEVICE)
 
-    history = train_and_evaluate(model, train_loader, test_loader, epochs=5, device=DEVICE)
+    history = train_and_evaluate(model, train_loader, test_loader, epochs=10, device=DEVICE)
 
     get_metrics_and_plot(model, test_loader, history, device=DEVICE)
 

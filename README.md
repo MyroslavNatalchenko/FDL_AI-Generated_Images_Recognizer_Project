@@ -44,11 +44,11 @@ Project for FDL subject in PJAIT
 - Recall:	 0.9614
 - F1 Score:	 0.9432
 
-## ResNet 50 [5 epochs]
-- Time taken for training: 2559.44s
-- Precision: 0.9270
-- Recall:	 0.9693
-- F1 Score:	 0.9477
+## ResNet 50 [10 epochs]
+- Time taken for training: 4877.81s
+- Precision: 0.9621
+- Recall:	 0.9591
+- F1 Score:	 0.9606
 
 ## Conv CNN with Tuner + DropOut + Weight Decay regularization [10 tries for 3 epochs + final 10 epochs training]
 - Time taken for training: 1289.65s  

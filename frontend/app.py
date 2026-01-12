@@ -94,10 +94,10 @@ with tab2:
         {"Model": "Conv CNN (Standard)", "Metric": "F1 Score", "Value": 0.9432},
         {"Model": "Conv CNN (Standard)", "Metric": "Time (s)", "Value": 374.67},
 
-        {"Model": "ResNet-50", "Metric": "Precision", "Value": 0.9270},
-        {"Model": "ResNet-50", "Metric": "Recall", "Value": 0.9693},
-        {"Model": "ResNet-50", "Metric": "F1 Score", "Value": 0.9477},
-        {"Model": "ResNet-50", "Metric": "Time (s)", "Value": 2559.44},
+        {"Model": "ResNet-50", "Metric": "Precision", "Value": 0.9621},
+        {"Model": "ResNet-50", "Metric": "Recall", "Value": 0.9591},
+        {"Model": "ResNet-50", "Metric": "F1 Score", "Value": 0.9606},
+        {"Model": "ResNet-50", "Metric": "Time (s)", "Value": 4877.81},
 
         {"Model": "Conv CNN (Tuned)", "Metric": "Precision", "Value": 0.9513},
         {"Model": "Conv CNN (Tuned)", "Metric": "Recall", "Value": 0.9413},
@@ -169,7 +169,7 @@ with tab2:
 
     tuned_plot_path = os.path.join("training_results", "conv_cnn_tuner", "conv_cnn_tuner.png")
     if os.path.exists(tuned_plot_path):
-        st.image(tuned_plot_path, caption="Tuned CNN Training History", width="stretch")
+        st.image(tuned_plot_path, caption="Tuned CNN Training History", output_format="PNG")
     else:
         st.info("Training plot image not found (check path).")
 
@@ -184,17 +184,17 @@ with tab2:
     )
     conv_plot_path = os.path.join("training_results", "conv_cnn", "conv_cnn.png")
     if os.path.exists(conv_plot_path):
-        st.image(conv_plot_path, caption="Standard CNN Training History", width="stretch")
+        st.image(conv_plot_path, caption="Standard CNN Training History", output_format="PNG")
 
     st.markdown("---")
 
     display_metrics(
         "Architecture: ResNet-50",
-        precision="0.9270",
-        recall="0.9693",
-        f1="0.9477",
-        time_taken="2559.44s"
+        precision="0.9621",
+        recall="0.9591",
+        f1="0.9606",
+        time_taken="4877.81s"
     )
     res_plot_path = os.path.join("training_results", "resnet-50", "resnet50.png")
     if os.path.exists(res_plot_path):
-        st.image(res_plot_path, caption="ResNet-50 Training History", width="stretch")
+        st.image(res_plot_path, caption="ResNet-50 Training History", output_format="PNG")
