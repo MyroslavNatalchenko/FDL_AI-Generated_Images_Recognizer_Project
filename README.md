@@ -39,25 +39,26 @@ Project for FDL subject in PJAIT
 
 # Training results
 ## Conv CNN [10 epochs]
-- Time taken for training: 273.76s
-- Precision: 0.9503
-- Recall:	 0.9399
-- F1 Score:	 0.9451
+- Time taken for training: 374.67s
+- Precision: 0.9256
+- Recall:	 0.9614
+- F1 Score:	 0.9432
 
 ## ResNet 50 [5 epochs]
-- Time taken for training: 2333.37s
-- Precision: 0.9318
-- Recall:	 0.9711
-- F1 Score:	 0.9510
+- Time taken for training: 2559.44s
+- Precision: 0.9270
+- Recall:	 0.9693
+- F1 Score:	 0.9477
 
-## Conv CNN with Tuner + DropOut [10 epochs]
-- Time taken for training: 1165.10s 
-- Precision:	0.9459
-- Recall:		0.9452
-- F1 Score:	    0.9455
+## Conv CNN with Tuner + DropOut + Weight Decay regularization [10 tries for 3 epochs + final 10 epochs training]
+- Time taken for training: 1289.65s  
+- Precision:	0.9513
+- Recall:		0.9413
+- F1 Score:	    0.9463
+
 ### BEST Configuration found with Tuner:
 - batch_size: 32 
 - n_neurons: 256
-- dropout_p: 0.29
+- dropout_p: 0.28
 - lr: 0.001
-- weight_decay: 1e-05
+- weight_decay: 0.0

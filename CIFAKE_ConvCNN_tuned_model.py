@@ -168,7 +168,7 @@ def tuner(root_dir, device, n_samples_for_check=2):
             device=device
         )
 
-        print(f"/t Validation accuracy: {final_val_acc:.4f}")
+        print(f"\t Validation accuracy: {final_val_acc:.4f}")
 
         results_log.append((config, final_val_acc))
         if final_val_acc > best_global_acc:

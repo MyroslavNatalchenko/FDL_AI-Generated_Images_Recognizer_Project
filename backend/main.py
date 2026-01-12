@@ -29,7 +29,7 @@ def load_models():
         print(f"Error with loading ConvCNN: {e}")
 
     try:
-        tuned_cnn = CIFAKE_ConvCNN_Tuned(n_neurons=256, dropout_p=0.29).to(DEVICE)
+        tuned_cnn = CIFAKE_ConvCNN_Tuned(n_neurons=256, dropout_p=0.28).to(DEVICE)
         tuned_path = os.path.join("training_results", "conv_cnn_tuner", "conv_cnn_tuner.pth")
         tuned_cnn.load_state_dict(torch.load(tuned_path, map_location=DEVICE))
         tuned_cnn.eval()

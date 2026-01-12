@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 from PIL import Image
 import os
+import pandas as pd
+import plotly.express as px
 
 API_URL = "http://localhost:8000"
 
@@ -11,7 +13,7 @@ st.title("CIFAKE Detection System")
 
 st.markdown("""
                 <style>
-                    .block-container {padding-top: 1rem; padding-bottom: 0rem;}
+                    .block-container {padding-top: 4rem; padding-bottom: 0rem;}
                 </style>
             """,
             unsafe_allow_html=True)
@@ -86,6 +88,53 @@ with tab1:
 with tab2:
     st.header("Model Performance & Metrics")
 
+    data = [
+        {"Model": "Conv CNN (Standard)", "Metric": "Precision", "Value": 0.9256},
+        {"Model": "Conv CNN (Standard)", "Metric": "Recall", "Value": 0.9614},
+        {"Model": "Conv CNN (Standard)", "Metric": "F1 Score", "Value": 0.9432},
+        {"Model": "Conv CNN (Standard)", "Metric": "Time (s)", "Value": 374.67},
+
+        {"Model": "ResNet-50", "Metric": "Precision", "Value": 0.9270},
+        {"Model": "ResNet-50", "Metric": "Recall", "Value": 0.9693},
+        {"Model": "ResNet-50", "Metric": "F1 Score", "Value": 0.9477},
+        {"Model": "ResNet-50", "Metric": "Time (s)", "Value": 2559.44},
+
+        {"Model": "Conv CNN (Tuned)", "Metric": "Precision", "Value": 0.9513},
+        {"Model": "Conv CNN (Tuned)", "Metric": "Recall", "Value": 0.9413},
+        {"Model": "Conv CNN (Tuned)", "Metric": "F1 Score", "Value": 0.9463},
+        {"Model": "Conv CNN (Tuned)", "Metric": "Time (s)", "Value": 1289.65},
+    ]
+    df = pd.DataFrame(data)
+
+    df_scores = df[df["Metric"] != "Time (s)"]
+    fig_scores = px.bar(
+        df_scores,
+        x="Metric",
+        y="Value",
+        color="Model",
+        barmode="group",
+        text_auto=True,
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+    fig_scores.update_traces(textposition='outside')
+    fig_scores.update_layout(yaxis_range=[0.8, 1.0])
+    st.plotly_chart(fig_scores, use_container_width=True)
+
+    st.subheader("⏱️ Training Efficiency")
+    df_time = df[df["Metric"] == "Time (s)"]
+    fig_time = px.bar(
+        df_time,
+        x="Value",
+        y="Model",
+        orientation='h',
+        color="Model",
+        text_auto=True,
+        title="Training Time (seconds) - Lower is Faster",
+        color_discrete_sequence=px.colors.qualitative.Pastel
+    )
+    st.plotly_chart(fig_time, use_container_width=True)
+
+    st.markdown("---")
 
     def display_metrics(title, precision, recall, f1, time_taken=None, extra_info=None):
         st.subheader(title)
@@ -104,17 +153,17 @@ with tab2:
     tuned_config_str = """
         Batch Size:    32
         Neurons (FC):  256
-        Dropout:       0.29
+        Dropout:       0.28
         Learning Rate: 0.001
-        Weight Decay:  1e-05
+        Weight Decay:  0.0
     """
 
     display_metrics(
-        "Architecture: Conv CNN (Tuned) [Best Performer] 🏆",
-        precision="0.9459",
-        recall="0.9452",
-        f1="0.9455",
-        time_taken="1165.10s",
+        "Architecture: Conv CNN (Tuned) [Highest Precision] 🎯",
+        precision="0.9513",
+        recall="0.9413",
+        f1="0.9463",
+        time_taken="1289.65s",
         extra_info=tuned_config_str
     )
 
@@ -122,16 +171,16 @@ with tab2:
     if os.path.exists(tuned_plot_path):
         st.image(tuned_plot_path, caption="Tuned CNN Training History", width="stretch")
     else:
-        st.warning(f"Plot not found at {tuned_plot_path}")
+        st.info("Training plot image not found (check path).")
 
     st.markdown("---")
 
     display_metrics(
         "Architecture: Conv CNN (Standard)",
-        precision="0.9503",
-        recall="0.9399",
-        f1="0.9451",
-        time_taken="273.76s"
+        precision="0.9256",
+        recall="0.9614",
+        f1="0.9432",
+        time_taken="374.67s"
     )
     conv_plot_path = os.path.join("training_results", "conv_cnn", "conv_cnn.png")
     if os.path.exists(conv_plot_path):
@@ -141,10 +190,10 @@ with tab2:
 
     display_metrics(
         "Architecture: ResNet-50",
-        precision="0.9318",
-        recall="0.9711",
-        f1="0.9510",
-        time_taken="2333.37s"
+        precision="0.9270",
+        recall="0.9693",
+        f1="0.9477",
+        time_taken="2559.44s"
     )
     res_plot_path = os.path.join("training_results", "resnet-50", "resnet50.png")
     if os.path.exists(res_plot_path):
