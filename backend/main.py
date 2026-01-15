@@ -1,16 +1,13 @@
-import sys
 import os
 import torch
-import torch.nn as nn
+from torchvision import transforms
 from fastapi import FastAPI, UploadFile, File, HTTPException
-from torchvision.transforms import ToTensor
 from PIL import Image
 import io
 
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from CIFAKE_ConvCNN_model import CIFAKE_ConvCNN
-from CIFAKE_ResNet_50_model import resnet50
-from CIFAKE_ConvCNN_tuned_model import CIFAKE_ConvCNN_Tuned
+from train_model.CIFAKE_ConvCNN_model import CIFAKE_ConvCNN
+from train_model.CIFAKE_ResNet_50_model import resnet50
+from train_model.CIFAKE_ConvCNN_tuned_model import CIFAKE_ConvCNN_Tuned
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 models = {}
@@ -53,8 +50,29 @@ load_models()
 
 def transform_image(image_bytes):
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    transform = ToTensor()
+    transform = transforms.Compose([
+        transforms.Resize((32, 32), interpolation=transforms.InterpolationMode.BILINEAR),
+        transforms.ToTensor()
+    ])
     return transform(image).unsqueeze(0).to(DEVICE)
+
+
+def get_prediction_from_model(model, model_key, tensor):
+    with torch.no_grad():
+        output = model(tensor)
+
+        if model_key in ["conv_cnn", "tuned_cnn"]:
+            prob = output.item()
+            prediction = "REAL" if prob > 0.5 else "FAKE"
+            confidence = prob if prob > 0.5 else 1 - prob
+        elif model_key == "resnet":
+            probabilities = torch.nn.functional.softmax(output, dim=1)
+            _, predicted_class = torch.max(output, 1)
+            classes = ['FAKE', 'REAL']
+            prediction = classes[predicted_class.item()]
+            confidence = probabilities[0][predicted_class.item()].item()
+
+    return prediction, confidence
 
 @app.get("/")
 def read_root():
@@ -95,6 +113,40 @@ async def predict(model_type: str, file: UploadFile = File(...)):
             "prediction": prediction,
             "confidence": f"{confidence:.4f}"
         }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/predict_all")
+async def predict_all(file: UploadFile = File(...)):
+    if not models:
+        raise HTTPException(status_code=500, detail="No models loaded on server")
+
+    image_bytes = await file.read()
+    results = []
+
+    try:
+        tensor = transform_image(image_bytes)
+
+        display_names = {
+            "conv_cnn": "Standard ConvCNN",
+            "tuned_cnn": "Tuned ConvCNN",
+            "resnet": "ResNet-50"
+        }
+
+        for key, model in models.items():
+            pred, conf = get_prediction_from_model(model, key, tensor)
+            results.append({
+                "model_key": key,
+                "model_name": display_names.get(key, key),
+                "prediction": pred,
+                "confidence": conf
+            })
+
+        if DEVICE.type == 'cuda': torch.cuda.empty_cache()
+
+        return {"results": results}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

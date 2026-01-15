@@ -202,6 +202,8 @@ def train_and_evaluate(model, train_loader, val_loader, epochs=10, device='mps')
     return history
 
 def get_metrics_and_plot(model, test_loader, history, device='mps'):
+    os.makedirs('../training_results/resnet-50', exist_ok=True)
+
     model.eval()
     all_preds, all_labels = [], []
 
@@ -259,7 +261,7 @@ def get_metrics_and_plot(model, test_loader, history, device='mps'):
     plt.ylabel('True Label')
 
     plt.tight_layout()
-    plt.savefig('training_results/resnet-50/resnet50.png')
+    plt.savefig('../training_results/resnet-50/resnet50.png')
     plt.show()
 
 if __name__ == "__main__":
@@ -273,4 +275,4 @@ if __name__ == "__main__":
 
     get_metrics_and_plot(model, test_loader, history, device=DEVICE)
 
-    torch.save(model.state_dict(), 'training_results/resnet-50/resnet50.pth')
+    torch.save(model.state_dict(), '../training_results/resnet-50/resnet50.pth')

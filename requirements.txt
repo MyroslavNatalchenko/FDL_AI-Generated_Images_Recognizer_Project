@@ -1,0 +1,13 @@
+torch
+torchvision
+fastapi
+pillow
+streamlit
+requests
+pandas
+plotly
+matplotlib
+seaborn
+numpy
+scikit-learn
+tqdm

@@ -197,7 +197,7 @@ def tuner(root_dir, device, n_samples_for_check=2):
     return final_model, test_loader, history
 
 def get_metrics_and_plot(model, test_loader, history, device="mps"):
-    os.makedirs('training_results/conv_cnn_tuner', exist_ok=True)
+    os.makedirs('../training_results/conv_cnn_tuner', exist_ok=True)
 
     model.eval()
     all_preds, all_labels = [], []
@@ -253,7 +253,7 @@ def get_metrics_and_plot(model, test_loader, history, device="mps"):
     plt.ylabel('True Label')
 
     plt.tight_layout()
-    plt.savefig('training_results/conv_cnn_tuner/conv_cnn_tuner.png')
+    plt.savefig('../training_results/conv_cnn_tuner/conv_cnn_tuner.png')
     plt.show()
 
 if __name__ == "__main__":
@@ -263,4 +263,4 @@ if __name__ == "__main__":
 
     get_metrics_and_plot(best_model, test_loader, history, DEVICE)
 
-    torch.save(best_model.state_dict(), 'training_results/conv_cnn_tuner/conv_cnn_tuner.pth')
+    torch.save(best_model.state_dict(), '../training_results/conv_cnn_tuner/conv_cnn_tuner.pth')
