@@ -1,7 +1,6 @@
-# FDL_AI-Generated_Images_Recognizer_Project
-Project for FDL subject in PJAIT
+# AI-Generated Image Recognition Project on pyTorch
 
-This project implements a Machine Learning pipeline to detect whether an image is real or AI-generated. It features Backend API serving multiple trained models (two CNN-based models and ResNet-50 model) and Frontend dashboard for interactive image analysis and prediction
+This project implements Machine Learning pipeline to detect whether an image is real or AI-generated. It features Backend API serving multiple trained models (two CNN-based models and ResNet-50 model) and Frontend dashboard for interactive image analysis and prediction
 
 ## Table of Contents
 - [Project Overview](#project-overview)
